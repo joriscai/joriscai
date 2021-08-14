@@ -6,7 +6,7 @@ name: Build Github Profile
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
-    branches: [ release ]
+    branches: [ dev ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -36,8 +36,17 @@ jobs:
       - name: Build
         run: yarn build
 
-      - name: Deploy to GitHub Profile
-        uses: JamesIves/github-pages-deploy-action@4.1.0
+      - name: Get user name and email, and set to env
+        uses: actions/github-script@v4
         with:
-          branch: main # The branch the action should deploy to.
-          folder: dist # The folder the action should deploy.
+          script: |
+            const { pusher } = github.context.payload
+            console.log(pusher)
+            process.env.GIT_USERNAME = pusher.name
+            process.env.GIT_EMAIL = pusher.email
+
+      - name: Update GitHub Profile
+        run: |
+          git diff
+          git config --global user.email $GIT_EMAIL
+          git config --global user.name $GIT_USERNAME
