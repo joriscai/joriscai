@@ -1,9 +1,9 @@
-import fs from 'fs';
+import fs from 'fs-extra';
 import path from 'path';
 import _ from 'lodash';
 import dayjs from 'dayjs';
 import { toProgress } from './utils';
-import { classifyWorkDay } from './workDay';
+import { classifyWorkDay, DayStatus } from './workDay';
 
 const tplDirPath = path.join(process.cwd(), 'tpl');
 
@@ -21,19 +21,21 @@ async function init() {
 
   const year = current.year();
   const month = current.month() + 1;
+  const date = current.date();
   const passedDayOfYear = current.diff(startOfYear, 'day');
   const passedDayOfMonth = current.diff(startOfMonth, 'day');
   const dayProgressOfYear = toProgress(passedDayOfYear / totalDayOfYear) + '%';
   const dayProgressOfMonth = toProgress(passedDayOfMonth / totalDayOfMonth)+ '%';
-  // TODO: work data request
-  // TODO: compute the data
-  const { workDay, holiday, passWorkDay } = await classifyWorkDay(2021, 9);
+  // get work data
+  const { workDay, todayStatus, passWorkDay } = await classifyWorkDay(year, month);
   const passedDayOfWork = passWorkDay;
   const totalDayOfWork = workDay;
+  const dayProgressOfWork = toProgress(passWorkDay / workDay) + '%';
 
   const compiled = compiler({
     year,
     month,
+    date,
     passedDayOfYear,
     passedDayOfMonth,
     dayProgressOfYear,
@@ -41,11 +43,14 @@ async function init() {
     totalDayOfYear,
     totalDayOfMonth,
     passedDayOfWork,
-    totalDayOfWork
+    totalDayOfWork,
+    dayProgressOfWork,
+    todayStatus: DayStatus[todayStatus]
   });
 
   console.log('compiled', compiled);
-
+  // output to file
+  fs.outputFileSync(path.join(process.cwd(), './dist/README.md'), compiled);
 }
 
 init();

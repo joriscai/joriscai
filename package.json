@@ -22,12 +22,14 @@
   "dependencies": {
     "bent": "^7.3.12",
     "dayjs": "^1.10.6",
+    "fs-extra": "^10.0.0",
     "iconv-lite": "^0.6.3",
     "lodash": "^4.17.21",
     "qs": "^6.10.1"
   },
   "devDependencies": {
     "@types/bent": "^7.3.2",
+    "@types/fs-extra": "^9.0.12",
     "@types/lodash": "^4.14.172",
     "@types/node": "^16.6.0",
     "@types/qs": "^6.9.7",
