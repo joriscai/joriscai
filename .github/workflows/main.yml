@@ -36,8 +36,16 @@ jobs:
             console.log(context)
             const { pusher } = context.payload
             console.log(pusher)
-            process.env.GIT_USERNAME = pusher.name
-            process.env.GIT_EMAIL = pusher.email
+            process.env.GIT_AUTHOR_NAME = pusher.name
+            process.env.GIT_AUTHOR_EMAIL = pusher.email
+
+      - name: Update GitHub Profile
+        run: |
+          git config --list
+          git diff
+          git config --global user.name "$GIT_AUTHOR_NAME"
+          git config --global user.email "$GIT_AUTHOR_EMAIL"
+          git config --list
 
       # Runs a set of commands using the runners shell
       - name: Install package
@@ -46,8 +54,3 @@ jobs:
       - name: Build
         run: yarn build
 
-      - name: Update GitHub Profile
-        run: |
-          git diff
-          git config --global user.email "$GIT_EMAIL"
-          git config --global user.name "$GIT_USERNAME"
