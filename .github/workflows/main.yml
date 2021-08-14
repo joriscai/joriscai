@@ -43,10 +43,13 @@ jobs:
       - name: List git config
         run: git config --list
 
+      - name: Echo
+        run: echo "${{fromJSON(steps.user-config.outputs).name}}"
+
       - name: Set git commit author
-        run:
-          - git config --global user.name ${{fromJSON(steps.user-config.outputs).name}}
-          - git config --global user.email ${{fromJSON(steps.user-config.outputs).email}}
+        run: |
+          git config --global user.name ${{fromJSON(steps.user-config.outputs).name}}
+          git config --global user.email ${{fromJSON(steps.user-config.outputs).email}}
 
       - name: List git config
         run: git config --list
