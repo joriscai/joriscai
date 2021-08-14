@@ -29,21 +29,22 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
+      - name: Get user name and email, and set to env
+        uses: actions/github-script@v4
+        with:
+          script: |
+            console.log(context)
+            const { pusher } = context.payload
+            console.log(pusher)
+            process.env.GIT_USERNAME = pusher.name
+            process.env.GIT_EMAIL = pusher.email
+
       # Runs a set of commands using the runners shell
       - name: Install package
         run: yarn
 
       - name: Build
         run: yarn build
-
-      - name: Get user name and email, and set to env
-        uses: actions/github-script@v4
-        with:
-          script: |
-            const { pusher } = github.context.payload
-            console.log(pusher)
-            process.env.GIT_USERNAME = pusher.name
-            process.env.GIT_EMAIL = pusher.email
 
       - name: Update GitHub Profile
         run: |
