@@ -44,7 +44,7 @@ jobs:
         run: git config --list
 
       - name: Echo
-        run: echo "${{steps.user-config.outputs}}"
+        run: echo "${{steps.user-config.outputs.name}}"
 
       - name: Echo
         run: echo "${{fromJSON(steps.user-config.outputs).name}}"
