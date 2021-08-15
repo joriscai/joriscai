@@ -44,6 +44,9 @@ jobs:
         run: git config --list
 
       - name: Echo
+        run: echo "${{steps.user-config.outputs}}"
+
+      - name: Echo
         run: echo "${{fromJSON(steps.user-config.outputs).name}}"
 
       - name: Set git commit author
