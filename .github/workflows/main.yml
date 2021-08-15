@@ -54,12 +54,12 @@ jobs:
         with:
           result-encoding: json
           script: |
-            console.log('github', github)
-            const commit = await github.repos.getCommit({
+            console.log('context', context)
+            const commit = await github.repos.listCommits({
               owner: context.repo.owner,
               repo: context.repo.repo,
             })
-            console.log('commit', commit.data.commit)
+            console.log('commit', commit[0].commit)
             const { pusher = {} } = context.payload
             console.log(pusher)
             core.exportVariable('GIT_NAME', pusher.name)
