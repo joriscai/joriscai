@@ -29,6 +29,25 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - uses: actions/cache@v2
+        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      # Runs a set of commands using the runners shell
+      - name: Install package
+        run: yarn
+
+      - name: Build
+        run: yarn build
+
       - name: Get user name and email, and set to env
         uses: actions/github-script@v4
         id: user-config
@@ -45,12 +64,6 @@ jobs:
           git config --global user.name $GIT_NAME
           git config --global user.email $GIT_EMAIL
 
-      # Runs a set of commands using the runners shell
-      - name: Install package
-        run: yarn
-
-      - name: Build
-        run: yarn build
 
       - name: Copy file
         run: cp dist/README.md README.md
