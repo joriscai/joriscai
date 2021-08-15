@@ -58,7 +58,8 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
             })
-            const commits = resp?.data || []
+            const { data } = resp || {}
+            const commits = data || []
             console.log('commits', commits)
             const [ latest ] = commits
             const { author = {} } = latest
