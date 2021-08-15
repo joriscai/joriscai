@@ -54,16 +54,17 @@ jobs:
         with:
           result-encoding: json
           script: |
-            console.log('context', context)
-            const commits = await github.repos.listCommits({
+            const resp = await github.repos.listCommits({
               owner: context.repo.owner,
               repo: context.repo.repo,
             })
+            const commits = resp?.data || []
             console.log('commits', commits)
-            const { pusher = {} } = context.payload
-            console.log(pusher)
-            core.exportVariable('GIT_NAME', pusher.name)
-            core.exportVariable('GIT_EMAIL', pusher.email)
+            const [ latest ] = commits
+            const { author = {} } = latest
+            console.log('author', author)
+            core.exportVariable('GIT_NAME', author.name)
+            core.exportVariable('GIT_EMAIL', author.email)
 
       - name: Set git commit author
         run: |
