@@ -40,16 +40,10 @@ jobs:
             core.exportVariable('GIT_NAME', pusher.name)
             core.exportVariable('GIT_EMAIL', pusher.email)
 
-      - name: List git config
-        run: git config --list
-
       - name: Set git commit author
         run: |
           git config --global user.name $GIT_NAME
           git config --global user.email $GIT_EMAIL
-
-      - name: List git config
-        run: git config --list
 
       # Runs a set of commands using the runners shell
       - name: Install package
@@ -58,11 +52,13 @@ jobs:
       - name: Build
         run: yarn build
 
+      - name: Copy file
+        run: cp dist/README.md README.md
+
       - name: Update GitHub Profile
         run: |
           git diff
           git pull
           git add -A
           git commit -m "Update README" || exit 0
-
-
+          git push
