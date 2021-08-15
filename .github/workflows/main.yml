@@ -38,27 +38,15 @@ jobs:
             const { pusher } = context.payload
             console.log(pusher)
             core.exportVariable('GIT_NAME', pusher.name)
-            return pusher
+            core.exportVariable('GIT_EMAIL', pusher.email)
 
       - name: List git config
         run: git config --list
 
-      - name: Echo
-        run: echo toJSON(${{steps.user-config.outputs}})
-
-      - name: Echo
-        run: echo $GIT_NAME
-
-      - name: Echo
-        run: echo ${{steps.user-config.outputs.name}}
-
-      - name: Echo
-        run: echo ${{fromJSON(steps.user-config.outputs)}}
-
       - name: Set git commit author
         run: |
-          git config --global user.name ${{fromJSON(steps.user-config.outputs).name}}
-          git config --global user.email ${{fromJSON(steps.user-config.outputs).email}}
+          git config --global user.name $GIT_NAME
+          git config --global user.email $GIT_EMAIL
 
       - name: List git config
         run: git config --list
