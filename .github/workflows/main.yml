@@ -57,12 +57,13 @@ jobs:
             const resp = await github.repos.listCommits({
               owner: context.repo.owner,
               repo: context.repo.repo,
+              per_page: 1
             })
             const { data } = resp || {}
             const commits = data || []
             console.log('commits', commits)
             const [ latest ] = commits
-            const { author = {} } = latest
+            const { author = {} } = latest.commit || {}
             console.log('author', author)
             core.exportVariable('GIT_NAME', author.name)
             core.exportVariable('GIT_EMAIL', author.email)
