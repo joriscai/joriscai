@@ -11,7 +11,7 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
   schedule:
-    - cron:  '40 16 * * *'
+    - cron:  '5 4,16 * * *'
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -60,5 +60,5 @@ jobs:
           git diff
           git pull
           git add -A
-          git commit -m "Update README" || exit 0
+          git commit -m "docs(readme): update README" || exit 0
           git push
