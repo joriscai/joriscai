@@ -35,16 +35,22 @@ jobs:
         with:
           result-encoding: json
           script: |
-            console.log(context)
             const { pusher } = context.payload
             console.log(pusher)
+            core.exportVariable('GIT_NAME', pusher.name)
             return pusher
 
       - name: List git config
         run: git config --list
 
       - name: Echo
-        run: echo "${{steps.user-config.outputs.name}}"
+        run: echo ${{steps.user-config.outputs}}
+
+      - name: Echo
+        run: echo $GIT_NAME
+
+      - name: Echo
+        run: echo ${{steps.user-config.outputs.name}}
 
       - name: Echo
         run: echo "${{fromJSON(steps.user-config.outputs).name}}"
