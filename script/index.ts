@@ -3,7 +3,7 @@ import path from 'path';
 import _ from 'lodash';
 import dayjs from 'dayjs';
 import { toProgress } from './utils';
-import { classifyWorkDay, DayStatus } from './workDay';
+import { classifyDaysInMonth, DayStatus } from './workDay';
 
 const tplDirPath = path.join(process.cwd(), 'tpl');
 
@@ -27,7 +27,7 @@ async function init() {
   const dayProgressOfYear = toProgress(passedDayOfYear / totalDayOfYear) + '%';
   const dayProgressOfMonth = toProgress(passedDayOfMonth / totalDayOfMonth)+ '%';
   // get work data
-  const { workDay, todayStatus, passWorkDay } = await classifyWorkDay(year, month);
+  const { workDay, todayStatus, passWorkDay } = await classifyDaysInMonth(year, month, date);
   const passedDayOfWork = passWorkDay;
   const totalDayOfWork = workDay;
   const dayProgressOfWork = toProgress(passWorkDay / workDay) + '%';
