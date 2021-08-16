@@ -89,7 +89,6 @@ jobs:
           git config --global user.name $GIT_NAME
           git config --global user.email $GIT_EMAIL
 
-
       - name: Copy file
         run: cp dist/README.md README.md
 
@@ -97,6 +96,6 @@ jobs:
         run: |
           git diff
           git pull
-          git add -A
+          git add ./README.md
           git commit -m "docs(readme): update README" || exit 0
           git push
