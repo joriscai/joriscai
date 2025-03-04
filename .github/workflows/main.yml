@@ -59,7 +59,11 @@ jobs:
 
       # Runs a set of commands using the runners shell
       - name: Install package
-        run: yarn
+        run: |
+          yarn config get "strict-ssl"
+          yarn config set "strict-ssl" false -g
+          yarn config get "strict-ssl"
+          yarn
 
       - name: Build
         run: yarn build
