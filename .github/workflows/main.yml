@@ -33,7 +33,7 @@ jobs:
         id: yarn-cache-dir-path
         run: echo "::set-output name=dir::$(yarn cache dir)"
 
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
         with:
           path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
@@ -49,7 +49,7 @@ jobs:
         shell: bash
 
       # cache almanac
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         id: almanac-cache # use this to check for `cache-hit`
         with:
           path: .cache/${{ steps.get-date.outputs.date }}.json
@@ -60,9 +60,6 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Install package
         run: |
-          yarn config get "strict-ssl"
-          yarn config set "strict-ssl" false -g
-          yarn config get "strict-ssl"
           yarn
 
       - name: Build
