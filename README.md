@@ -6,9 +6,9 @@ Skills: VUE JS / REACT / JS / HTML / CSS
 ## Time Passed
 type | current | passed | total | progress
 ---|:--:|:--:| :--:|:---:
-Year|2025 | 136|365 | 37.26%
-Month|5|16|31|51.61%
-Work| 17(holiday) |9|19|47.36%
+Year|2025 | 137|365 | 37.53%
+Month|5|17|31|54.83%
+Work| 18(holiday) |9|19|47.36%
 
 
 ## Github
